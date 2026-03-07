@@ -1,6 +1,7 @@
-import { Component, computed, effect, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { CommonModule } from '@angular/common';
+import { Component, effect, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { GotGeoService } from '../../../services/GotGeo.service';
+import { GotGeoJson } from '../../../interfaces/got.interface';
 
 @Component({
   selector: 'app-sidenav',
@@ -10,33 +11,31 @@ import { GotGeoService } from '../../../services/GotGeo.service';
 })
 export class Sidenav {
 
-    constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
 
     effect(() => {
-      if (!this.localization()) {
-        console.log(this.localization)
-        this.opened = false;
-      }else{
-        this.opened = true;
-      }
+    this.opened = !!this.localization()
     });
+
+
 
   }
 
-  private mapState = inject(GotGeoService)
-  localization = this.mapState.selectLocation
 
-  opened = false;
+ private mapState = inject(GotGeoService)
+ public localization = this.mapState.selectLocation
+ opened = false;
 
 
   toggle() {
-  if (!this.localization()) return;
-  this.opened = !this.opened;
+  if (this.localization()) return;
+  this.opened = true
+
   }
 
 
   clear() {
-    this.mapState.clear();
+
     this.opened = false;
   }
 

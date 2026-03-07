@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import maplibregl, { Map, Marker, NavigationControl, Popup } from 'maplibre-gl';
 import MinimapControl from "maplibregl-minimap";
 import { GotGeoService } from '../../../services/GotGeo.service';
-import { GotFeature, GotGeometry, GotProperties, } from '../../../interfaces/got.interface';
+import { GotFeature, GotGeometry, GotProperties, GotActor } from '../../../interfaces/got.interface';
 import { CommonModule } from '@angular/common';
 import { FeatureCollection } from 'geojson';
 
@@ -72,11 +72,9 @@ export class Maps implements OnInit {
 
     this.geoService.getLocalization().subscribe((data: any) => {
 
-      data.features.map((item: any) => {
+      data.features.forEach((item: GotFeature) => {
 
         p = item.properties
-
-        // console.log(item.properties)
 
 
         let text = `<div class="w-64 z-0 space-y-4 font-sans bg-stone-100 rounded-lg">
@@ -101,6 +99,8 @@ export class Maps implements OnInit {
   </div>
         `
 
+       
+
 
         const popup = new maplibregl.Popup({ offset: 25, maxWidth: "300px" }).setHTML(text
 
@@ -117,30 +117,29 @@ export class Maps implements OnInit {
           .setPopup(popup)
           .addTo(this.map)
 
+        marker.getElement().addEventListener('click', () => {
 
-        this.map.on('click', () => {
+          this.mapState.setLocation(item)
 
-          
         })
+
 
       })
 
 
-    })
 
+    })
 
   }
 
 
 
+
+
+
+
+
 }
-
-
-
-
-
-
-
 
 
 

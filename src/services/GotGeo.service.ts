@@ -12,7 +12,7 @@ export class GotGeoService {
 
   private geoLocalize = 'assets/prueba.geojson';
 
-  private _selectLocation = signal<GotFeature['properties'] | null>(null);
+  private _selectLocation = signal<GotFeature | null>(null);
   private _searchLocation = signal<Array<GotFeature['properties'] & {latitude: number, longitude: number}>>([]);
 
   selectLocation = this._selectLocation.asReadonly();
@@ -28,8 +28,8 @@ export class GotGeoService {
 }
 
 
- setLocation(properties: GotFeature['properties']) {
-    this._selectLocation.set(properties);
+ setLocation(features: GotFeature) {
+    this._selectLocation.set(features);
 }
 
 clear() {

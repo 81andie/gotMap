@@ -49,13 +49,13 @@
    <div class="mb-8">
  <p class="mb-2 text-sm text-stone-400 uppercase tracking-wide ">Estás muy cerca<a href="#" class="font-medium  underline hover:no-underline"></a> de estos escenarios</p>
 
-   <p class="text-2xl text-white font-bold">{{ localization()?.real_place }}</p>
+   <p class="text-2xl text-white font-bold">{{ localization()?.properties?.country}}</p>
    </div>
 
 
 <div class="mb-8 rounded-lg overflow-hidden">
   <img
-    [src]="localization()?.place_image"
+    [src]="localization()?.properties?.place_image"
     class="w-full h-48 object-cover"
   >
 </div>
@@ -64,14 +64,14 @@
    <div class="mb-8 text-center">
 <div class="mb-5 mt-5 text-md text-stone-400 font-bold">
 
-  <p class="text-xs uppercase tracking-widest text-stone-200 mb-2">{{localization()?.scene}}</p>Escene:
-    <p class="mt-4 text-lg italic text-white">"{{localization()?.series}}"
+  <p class="text-xs uppercase tracking-widest text-stone-200 mb-2">{{localization()?.properties?.scene}}</p>Escene:
+    <p class="mt-4 text-lg italic text-white">"{{localization()?.properties?.series}}"
 </div>
 
  <p class="mb-4 text-sm uppercase tracking-wide text-stone-400">Personajes</p>
 
 <div class="space-y-4">
-   @for( item of localization()?.actors; track item;){
+   @for( item of localization()?.properties?.actors; track item;){
 
  <div class="flex justify-center items-center-safe gap-4">
       <img
