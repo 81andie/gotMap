@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import maplibregl, { Map, Marker, NavigationControl, Popup } from 'maplibre-gl';
 import MinimapControl from "maplibregl-minimap";
 import { GotGeoService } from '../../../services/GotGeo.service';
@@ -16,7 +16,27 @@ import { FeatureCollection } from 'geojson';
 })
 export class Maps implements OnInit {
 
-  constructor(private geoService: GotGeoService) { }
+  constructor(private geoService: GotGeoService,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+
+    effect(() => {
+      const selected = this.mapStateUpdate.searchLocalition()
+      if (!selected.length || !this.map) return
+      const bounds = new maplibregl.LngLatBounds()
+
+       selected.forEach(p => bounds.extend([p.longitude, p.latitude]));
+      //console.log(latlngs)
+      this.map.fitBounds(bounds, {
+        padding: 50, // margen alrededor de los markers
+        animate: true,
+        duration: 1.5,
+        maxZoom: 18
+      })
+
+    })
+
+  }
 
   map!: Map;
 
@@ -76,7 +96,6 @@ export class Maps implements OnInit {
 
         p = item.properties
 
-
         let text = `<div class="w-64 z-0 space-y-4 font-sans bg-stone-100 rounded-lg">
     <p class="text-xs uppercase tracking-widest text-stone-400">
       Localización
@@ -99,9 +118,6 @@ export class Maps implements OnInit {
   </div>
         `
 
-       
-
-
         const popup = new maplibregl.Popup({ offset: 25, maxWidth: "300px" }).setHTML(text
 
         );
@@ -120,6 +136,7 @@ export class Maps implements OnInit {
         marker.getElement().addEventListener('click', () => {
 
           this.mapState.setLocation(item)
+          this.mapStateUpdate.setSearchLocation([{ ...p, latitude: item.geometry.coordinates[1], longitude: item.geometry.coordinates[0] }])
 
         })
 

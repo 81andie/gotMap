@@ -8,31 +8,35 @@ import { GotFeature } from '../interfaces/got.interface';
 
 export class GotGeoService {
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient) { }
 
   private geoLocalize = 'assets/prueba.geojson';
 
   private _selectLocation = signal<GotFeature | null>(null);
-  private _searchLocation = signal<Array<GotFeature['properties'] & {latitude: number, longitude: number}>>([]);
+  private _searchLocation = signal<Array<GotFeature['properties'] & { latitude: number, longitude: number }>>([]);
 
   selectLocation = this._selectLocation.asReadonly();
   searchLocalition = this._searchLocation.asReadonly()
 
+  getLocalization() {
+    return this.http.get<[GotGeometry]>(this.geoLocalize)
+  }
 
-  getLocalization(){
-  return this.http.get<[GotGeometry]>(this.geoLocalize)
-}
+  setSearchLocation(properties: Array<GotFeature['properties'] & { latitude: number, longitude: number }>) {
+    this._searchLocation.set(properties)
+  }
 
-  getLocalizationMarkers(){
-  return this.http.get<[GotFeature]>(this.geoLocalize)
-}
-
-
- setLocation(features: GotFeature) {
+  setLocation(features: GotFeature) {
     this._selectLocation.set(features);
-}
+  }
 
-clear() {
+
+  getLocalizationMarkers() {
+    return this.http.get<[GotFeature]>(this.geoLocalize)
+  }
+  
+
+  clear() {
     this._selectLocation.set(null);
   }
 

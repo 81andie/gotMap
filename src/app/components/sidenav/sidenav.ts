@@ -30,12 +30,10 @@ export class Sidenav {
   toggle() {
   if (this.localization()) return;
   this.opened = true
-
   }
 
 
   clear() {
-
     this.opened = false;
   }
 

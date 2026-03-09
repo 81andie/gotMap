@@ -5,11 +5,12 @@ import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { Maps } from "./components/map/map";
 import { Sidenav } from "./components/sidenav/sidenav";
+import { MiniBuscador } from "./components/mini-buscador/mini-buscador";
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Maps, Sidenav],
+  imports: [RouterOutlet, Navbar, Maps, Sidenav, MiniBuscador],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
